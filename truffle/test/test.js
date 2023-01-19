@@ -1,3 +1,5 @@
+const { assert } = require("chai");
+
 const ImageDapp = artifacts.require("ImageDapp");
 
 require("chai").use(require("chai-as-promised")).should();
@@ -29,7 +31,7 @@ contract("ImageDapp", ([deployer, author, liker]) => {
     const hash = "hash";
 
     before(async () => {
-      result = await imageDapp.createPost(hash, "Post description", {
+      result = await imageDapp.createPost(hash, "Post description", 1, {
         from: author,
       });
       postCount = await imageDapp.postCount();
@@ -50,17 +52,21 @@ contract("ImageDapp", ([deployer, author, liker]) => {
       assert.equal(event.likes.toNumber(), 0, "Likes is correct");
       assert.equal(
         event.amountPerLike.toNumber(),
-        0,
+        1,
         "Amount per like is correct"
       );
       assert.equal(event.author, author, "Author is the same");
 
       //FAILURE
-      await imageDapp.createPost("", "Post description", {
+      await imageDapp.createPost("", "Post description", 1, {
         from: author,
       }).should.be.rejected;
 
-      await imageDapp.createPost(hash, "", {
+      await imageDapp.createPost(hash, "", 1, {
+        from: author,
+      }).should.be.rejected;
+
+      await imageDapp.createPost(hash, "Post description", -1, {
         from: author,
       }).should.be.rejected;
     });
@@ -77,10 +83,67 @@ contract("ImageDapp", ([deployer, author, liker]) => {
       assert.equal(post.likes.toNumber(), 0, "Likes is correct");
       assert.equal(
         post.amountPerLike.toNumber(),
-        0,
+        1,
         "Amount per like is correct"
       );
       assert.equal(post.author, author, "Author is the same");
+    });
+
+    it("Allows users to like posts", async () => {
+      let oldAuthorBalance;
+      oldAuthorBalance = await new web3.eth.getBalance(author);
+      oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
+
+      const post = await imageDapp.posts(postCount);
+
+      result = await imageDapp.likePost(postCount, {
+        from: liker,
+        value: web3.utils.toWei(post.amountPerLike, "Ether"),
+      });
+
+      //SUCCESS
+      const event = result.logs[0].args;
+      assert.equal(event.id.toNumber(), post.id.toNumber(), "id is correct");
+      assert.equal(event.hash, post.hash, "Hash is correct");
+      assert.equal(
+        event.description,
+        post.description,
+        "Description is correct"
+      );
+      assert.equal(
+        event.likes.toNumber(),
+        post.likes.toNumber() + 1,
+        "Likes is correct"
+      );
+      assert.equal(
+        event.amountPerLike.toNumber(),
+        post.amountPerLike.toNumber(),
+        "Amount per like is correct"
+      );
+      assert.equal(event.author, post.author, "Author is the same");
+
+      //Check that the author recieved funds
+      let newAuthorBalance;
+      newAuthorBalance = await new web3.eth.getBalance(author);
+      newAuthorBalance = new web3.utils.BN(newAuthorBalance);
+
+      let tipPostOwner;
+      tipPostOwner = web3.utils.toWei(post.amountPerLike, "Ether");
+      tipPostOwner = new web3.utils.BN(tipPostOwner);
+
+      const expectedBalance = oldAuthorBalance.add(tipPostOwner);
+
+      assert.equal(
+        newAuthorBalance.toString(),
+        expectedBalance.toString(),
+        "Balance is equal"
+      );
+
+      //FAILURE
+      await imageDapp.likePost(10, {
+        from: liker,
+        value: web3.utils.toWei(post.amountPerLike, "Ether"),
+      }).should.be.rejected
     });
   });
 });
