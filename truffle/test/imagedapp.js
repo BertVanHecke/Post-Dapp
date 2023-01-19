@@ -1,18 +1,25 @@
 const ImageDapp = artifacts.require("ImageDapp");
 
-contract('ImageDapp', () => {
-  it('should read newly written values', async() => {
-    const simpleStorageInstance = await SimpleStorage.deployed();
-    var value = (await simpleStorageInstance.read.call()).toNumber();
+contract("ImageDapp", ([deployer, author, liker]) => {
+  let imageDapp;
 
-    assert.equal(value, 0, "0 wasn't the initial value");
+  before(async () => {
+    imageDapp = await ImageDapp.deployed();
+  });
 
-    await simpleStorageInstance.write(1);
-    value = (await simpleStorageInstance.read.call()).toNumber();
-    assert.equal(value, 1, "1 was not written");
+  describe("Deployment", () => {
+    
+    it("Deploys successfully", async () => {
+      const address = await imageDapp.address;
+      assert.notEqual(address, 0x0);
+      assert.notEqual(address, "");
+      assert.notEqual(address, null);
+      assert.notEqual(address, undefined);
+    });
 
-    await simpleStorageInstance.write(2);
-    value = (await simpleStorageInstance.read.call()).toNumber();
-    assert.equal(value, 2, "2 was not written");
+    it("Has a name", async () => {
+      const name = await imageDapp.name();
+      assert.equal(name, "ImageDapp");
+    });
   });
 });
