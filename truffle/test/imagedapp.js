@@ -1,6 +1,6 @@
-const SimpleStorage = artifacts.require("SimpleStorage");
+const ImageDapp = artifacts.require("ImageDapp");
 
-contract('SimpleStorage', () => {
+contract('ImageDapp', () => {
   it('should read newly written values', async() => {
     const simpleStorageInstance = await SimpleStorage.deployed();
     var value = (await simpleStorageInstance.read.call()).toNumber();
