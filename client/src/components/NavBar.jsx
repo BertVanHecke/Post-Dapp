@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { EthContext } from "../contexts/EthContext";
 
 function NavBar() {
   const [state, setState] = useState(false);
   const navRef = useRef();
+  const account = useContext(EthContext);
 
   useEffect(() => {
     const body = document.body;
@@ -74,7 +76,9 @@ function NavBar() {
             <ul className="flex flex-col-reverse space-x-0 lg:space-x-6 lg:flex-row">
               <li className="mt-4 lg:mt-0">
                 <p className="py-3 px-4 text-center border text-gray-600 hover:text-indigo-600 rounded-md block lg:inline lg:border-0">
-                  0x0
+                  {account.state.loading
+                    ? "0x0"
+                    : account.state.accounts[0]}
                 </p>
               </li>
               <li className="mt-8 lg:mt-0">
