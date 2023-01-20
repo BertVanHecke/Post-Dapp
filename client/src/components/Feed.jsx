@@ -33,16 +33,27 @@ function Feed() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        posts.map((post) => {
-          return (
-            <Post
-              key={post.id}
-              description={post.description}
-              amountPerLike={post.amountPerLike}
-              hash={post.hash}
-            />
-          );
-        })
+        <div className="py-14">
+          <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+            <div className="mt-6">
+              <ul className="flex gap-x-10 gap-y-10 flex-wrap items-center justify-center md:gap-x-16">
+                {posts.map((post) => {
+                  return (
+                    <Post
+                      key={post.id}
+                      id={post.id}
+                      likes={post.likes}
+                      author={post.author}
+                      description={post.description}
+                      amountPerLike={post.amountPerLike}
+                      hash={post.hash}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
