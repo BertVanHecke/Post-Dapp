@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import "./App.css";
 import Feed from "./components/Feed";
 import Modal from "./components/Modal";
+import Footer from "./components/Footer";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ function App() {
         <NavBar setOpen={setOpen} />
         <Modal open={open} setOpen={setOpen} />
         <Feed />
+        <Footer />
       </div>
     </EthProvider>
   );

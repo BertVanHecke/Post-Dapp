@@ -1,16 +1,21 @@
-function Link({ uri, text }) {
-  return <a href={uri} target="_blank" rel="noreferrer">{text}</a>;
-}
+import logo from "../assets/images/logo-large.png";
 
 function Footer() {
   return (
-    <footer>
-      <h2>More resources</h2>
-      <Link uri={"https://trufflesuite.com"} text={"Truffle"} />
-      <Link uri={"https://reactjs.org"} text={"React"} />
-      <Link uri={"https://soliditylang.org"} text={"Solidity"} />
-      <Link uri={"https://ethereum.org"} text={"Ethereum"} />
-    </footer >
+    <footer className="text-gray-500 bg-white px-4 py-5 max-w-screen-xl mx-auto md:px-8">
+      <div className="max-w-lg sm:mx-auto sm:text-center">
+        <img src={logo} className="w-32 sm:mx-auto" />
+        <p className="leading-relaxed mt-2 text-[15px]">
+          The PostDapp uses smart contract technology to ensure that the
+          uploaded photos are stored in a decentrialized database.
+        </p>
+      </div>
+      <div className="mt-8 items-center text-center">
+        <div className="mt-4 sm:mt-0">
+          &copy; 2023 PostDapp All rights reserved.
+        </div>
+      </div>
+    </footer>
   );
 }
 
