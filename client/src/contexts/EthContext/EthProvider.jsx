@@ -29,7 +29,6 @@ function EthProvider({ children }) {
           networkID,
           contract,
           loading: false,
-          posts: [],
         },
       });
     }

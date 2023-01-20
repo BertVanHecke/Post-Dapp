@@ -31,7 +31,7 @@ function Feed() {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center">Loading...</p>
       ) : (
         <div className="py-14">
           <div className="max-w-screen-xl mx-auto px-4 md:px-8">

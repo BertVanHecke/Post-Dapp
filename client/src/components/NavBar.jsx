@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { EthContext } from "../contexts/EthContext";
+import logo from "../assets/images/logo-large.png";
 
 function NavBar({ setOpen }) {
   const [state, setState] = useState(false);
@@ -28,7 +29,7 @@ function NavBar({ setOpen }) {
       <div className="items-center px-4 py-4 max-w-screen-xl mx-auto md:px-8 lg:flex">
         <div className="flex items-center justify-between py-3 lg:py-4 lg:block">
           <a href="http://localhost:3000/">
-            <h1 className="text-gray-800 text-5xl font-bold sm:text-4xl">PostDapp!</h1>
+            <img src={logo} className="h-12" />
           </a>
           <div className="lg:hidden">
             <button
@@ -75,13 +76,13 @@ function NavBar({ setOpen }) {
           <div>
             <ul className="flex items-center flex-col-reverse space-x-0 lg:space-x-6 lg:flex-row">
               <li className="mt-4 lg:mt-0">
-                <p className="py-3 px-4 text-center border text-gray-600 hover:text-indigo-600 rounded-md block lg:inline lg:border-0">
+                <p className="py-3 px-4 text-center border text-gray-600 hover:text-red-600 rounded-md block lg:inline lg:border-0">
                   {account.state.loading ? "0x0" : account.state.accounts[0]}
                 </p>
               </li>
               <li className="mt-8 lg:mt-0">
                 <button
-                  className="py-3 px-4 text-center text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow block lg:inline"
+                  className="py-3 px-4 text-center text-white bg-red-600 hover:bg-red-700 rounded-md shadow block lg:inline"
                   onClick={() => setOpen(true)}
                 >
                   Create post

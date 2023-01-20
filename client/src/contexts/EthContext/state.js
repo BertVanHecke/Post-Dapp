@@ -1,6 +1,5 @@
 const actions = {
   init: "INIT",
-  upload: "UPLOAD"
 };
 
 const initialState = {
@@ -10,7 +9,6 @@ const initialState = {
   networkID: null,
   contract: null,
   loading: true,
-  posts: []
 };
 
 const reducer = (state, action) => {
@@ -18,8 +16,6 @@ const reducer = (state, action) => {
   switch (type) {
     case actions.init:
       return { ...state, ...data };
-    case actions.upload:
-      return { ...state, ...data }
     default:
       throw new Error("Undefined reducer action type");
   }
