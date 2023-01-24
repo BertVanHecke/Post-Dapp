@@ -26,10 +26,22 @@ contract("PostDapp", ([deployer, author, liker]) => {
     });
   });
 
+  /*
+    Al de testen die te maken hebben met posts.
+  */
   describe("Posts", () => {
+    /* 
+      Het veld result is voor het antwoord dat wordt teruggestuurd wanneer we een post aanmaken.
+      Het veld postCount is voor het opslaan van de postCount.
+      Het veld hash is een test hash omdat we hier geen afbeelding opslaan op IPFS en dus geen hash terugkrijgen.
+    */
     let result, postCount;
     const hash = "hash";
 
+    /* 
+      Voor dat we aan de test beginnen maken we we een post aan, 
+      het event dat we aanroepen op het einde van deze functie stuurt een antwoord terug.
+    */
     before(async () => {
       result = await postDapp.createPost(hash, "Post description", 1, {
         from: author,
@@ -37,38 +49,49 @@ contract("PostDapp", ([deployer, author, liker]) => {
       postCount = await postDapp.postCount();
     });
 
+    /* 
+      Test voor het creëren van een post.
+    */
     it("Creates a post", async () => {
-      // SUCESS
-      assert.equal(postCount, 1);
+      /* 
+        In de smart contract maken we gebruik van een event wanneer we een post aanmaken.
+        We vragen eerst de gegevens van de gelanceerde event op en slaan dit op in een het veld event.
+      */
       const event = result.logs[0].args;
 
-      assert.equal(event.id.toNumber(), postCount.toNumber(), "id is correct");
-      assert.equal(event.hash, hash, "Hash is correct");
+      /* 
+        We testen eerst of een post succesvol kan worden aangemaakt.
+      */
+      assert.equal(postCount, 1); // Is het veld postCount gelijk aan 1?
+      assert.equal(event.id.toNumber(), postCount.toNumber(), "id is correct"); // Is de id van het event gelijk aan het veld postCount?
+      assert.equal(event.hash, hash, "Hash is correct"); // Is de hash van het event gelijk aan de hash van de post?
       assert.equal(
         event.description,
         "Post description",
         "Description is correct"
-      );
+      ); // Is de beschrijving van het event gelijk aan de beschrijving van de post?
       assert.equal(event.likes.toNumber(), 0, "Likes is correct");
       assert.equal(
         event.amountPerLike.toNumber(),
         1,
         "Amount per like is correct"
-      );
-      assert.equal(event.author, author, "Author is the same");
+      ); // Is de hoeveelheid Ether per like van het event gelijk aan de hoeveelheid Ether per like van de post?
+      assert.equal(event.author, author, "Author is the same"); // Is de auteur van het event gelijk aan de auteur van de post?
 
-      //FAILURE
+      /* 
+        Vervolgens testen we of een post faalt wanneer de opgegeven parameters niet bruikbaar zijn.
+      */
       await postDapp.createPost("", "Post description", 1, {
         from: author,
-      }).should.be.rejected;
+      }).should.be.rejected; // De hash is leeg en dit zou dus moeten falen.
 
       await postDapp.createPost(hash, "", 1, {
         from: author,
-      }).should.be.rejected;
+      }).should.be.rejected; // De beschrijving is leeg en dit zou dus moeten falen.
 
       await postDapp.createPost(hash, "Post description", -1, {
         from: author,
-      }).should.be.rejected;
+      }).should.be.rejected; // De hoeveelheid Ether per like is negatief en dit zou dus moeten falen.
     });
 
     it("Lists posts", async () => {
@@ -143,7 +166,7 @@ contract("PostDapp", ([deployer, author, liker]) => {
       await postDapp.likePost(10, {
         from: liker,
         value: web3.utils.toWei(post.amountPerLike, "Ether"),
-      }).should.be.rejected
+      }).should.be.rejected;
     });
   });
 });
