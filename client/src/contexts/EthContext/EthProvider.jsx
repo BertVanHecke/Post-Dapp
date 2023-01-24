@@ -37,7 +37,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/ImageDapp.json");
+        const artifact = require("../../contracts/PostDapp.json");
         init(artifact);
       } catch (err) {
         console.error(err);

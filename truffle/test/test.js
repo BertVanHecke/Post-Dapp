@@ -1,19 +1,19 @@
 const { assert } = require("chai");
 
-const ImageDapp = artifacts.require("ImageDapp");
+const PostDapp = artifacts.require("PostDapp");
 
 require("chai").use(require("chai-as-promised")).should();
 
-contract("ImageDapp", ([deployer, author, liker]) => {
-  let imageDapp;
+contract("PostDapp", ([deployer, author, liker]) => {
+  let postDapp;
 
   before(async () => {
-    imageDapp = await ImageDapp.deployed();
+    postDapp = await PostDapp.deployed();
   });
 
   describe("Deployment", () => {
     it("Deploys successfully", async () => {
-      const address = await imageDapp.address;
+      const address = await postDapp.address;
       assert.notEqual(address, 0x0);
       assert.notEqual(address, "");
       assert.notEqual(address, null);
@@ -21,8 +21,8 @@ contract("ImageDapp", ([deployer, author, liker]) => {
     });
 
     it("Has a name", async () => {
-      const name = await imageDapp.name();
-      assert.equal(name, "ImageDapp");
+      const name = await postDapp.name();
+      assert.equal(name, "PostDapp");
     });
   });
 
@@ -31,10 +31,10 @@ contract("ImageDapp", ([deployer, author, liker]) => {
     const hash = "hash";
 
     before(async () => {
-      result = await imageDapp.createPost(hash, "Post description", 1, {
+      result = await postDapp.createPost(hash, "Post description", 1, {
         from: author,
       });
-      postCount = await imageDapp.postCount();
+      postCount = await postDapp.postCount();
     });
 
     it("Creates a post", async () => {
@@ -58,21 +58,21 @@ contract("ImageDapp", ([deployer, author, liker]) => {
       assert.equal(event.author, author, "Author is the same");
 
       //FAILURE
-      await imageDapp.createPost("", "Post description", 1, {
+      await postDapp.createPost("", "Post description", 1, {
         from: author,
       }).should.be.rejected;
 
-      await imageDapp.createPost(hash, "", 1, {
+      await postDapp.createPost(hash, "", 1, {
         from: author,
       }).should.be.rejected;
 
-      await imageDapp.createPost(hash, "Post description", -1, {
+      await postDapp.createPost(hash, "Post description", -1, {
         from: author,
       }).should.be.rejected;
     });
 
     it("Lists posts", async () => {
-      const post = await imageDapp.posts(postCount);
+      const post = await postDapp.posts(postCount);
       assert.equal(post.id.toNumber(), postCount.toNumber(), "id is correct");
       assert.equal(post.hash, hash, "Hash is correct");
       assert.equal(
@@ -94,9 +94,9 @@ contract("ImageDapp", ([deployer, author, liker]) => {
       oldAuthorBalance = await new web3.eth.getBalance(author);
       oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
 
-      const post = await imageDapp.posts(postCount);
+      const post = await postDapp.posts(postCount);
 
-      result = await imageDapp.likePost(postCount, {
+      result = await postDapp.likePost(postCount, {
         from: liker,
         value: web3.utils.toWei(post.amountPerLike, "Ether"),
       });
@@ -140,7 +140,7 @@ contract("ImageDapp", ([deployer, author, liker]) => {
       );
 
       //FAILURE
-      await imageDapp.likePost(10, {
+      await postDapp.likePost(10, {
         from: liker,
         value: web3.utils.toWei(post.amountPerLike, "Ether"),
       }).should.be.rejected
