@@ -27,7 +27,7 @@ contract("PostDapp", ([deployer, author, liker]) => {
   });
 
   /*
-    Al de testen die te maken hebben met posts.
+    Alle testen die te maken hebben met posts.
   */
   describe("Posts", () => {
     /* 
@@ -54,8 +54,8 @@ contract("PostDapp", ([deployer, author, liker]) => {
     */
     it("Creates a post", async () => {
       /* 
-        In de smart contract maken we gebruik van een event wanneer we een post aanmaken.
-        We vragen eerst de gegevens van de gelanceerde event op en slaan dit op in een het veld event.
+        In het slimme contract maken we gebruik van een event wanneer we een post aanmaken.
+        We vragen eerst de gegevens van het gelanceerde event op en slaan dit op in het veld event.
       */
       const event = result.logs[0].args;
 

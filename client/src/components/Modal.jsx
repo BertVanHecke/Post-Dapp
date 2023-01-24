@@ -4,8 +4,8 @@ import { ipfs } from "../ipfs/ipfs";
 
 function Modal({ open, setOpen }) {
   const eth = useContext(EthContext);
-  const [description, setDescription] = useState("");
-  const [amountPerLike, setAmountPerLike] = useState(0);
+  const [description, setDescription] = useState(""); // De beschrijving van een post.
+  const [amountPerLike, setAmountPerLike] = useState(0); // De hoeveelheid Ether die de auteur vraagt per like.
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -14,11 +14,17 @@ function Modal({ open, setOpen }) {
     const form = e.target;
     const file = form[0].files[0];
 
+    /* 
+      We kijken na of er een file geselecteerd is.
+    */
     if (!file || file?.length === 0) {
       setLoading(false);
       return alert("No files attached.");
     }
 
+    /* 
+      We uploaden de afbeelding naar IPFS en maken een post aan.
+    */
     try {
       const result = await ipfs.add(file);
       eth.state.contract.methods
@@ -32,6 +38,9 @@ function Modal({ open, setOpen }) {
       console.error(error);
     }
 
+    /* 
+      We resetten de velden van de form.
+    */
     setDescription("");
     setAmountPerLike(0);
     form.reset();

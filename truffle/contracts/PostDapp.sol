@@ -1,46 +1,45 @@
 // SPDX-License-Identifier: MIT
-
 /*
-    versies van solidity die ondersteund zijn, in ons geval is dit vanaf versie 0.4.22 tot 0.9.0 
+    Versies van Solidity die ondersteund zijn, in ons geval is dit vanaf versie 0.4.22 tot 0.9.0 .
 */
 pragma solidity >=0.4.22 <0.9.0;
 
 contract PostDapp {
     /* 
-        De naam van het smart contract
+        De naam van het slimme contract
     */
     string public name = "PostDapp";
 
     /* 
-        postCount houdt de hoeveelheid posts die er geplaatst zijn via ons smart contract bij,
+        postCount houdt de hoeveelheid posts die er geplaatst zijn via het slimme contract bij,
         aangezien we de postCount verhogen telkens dat er een post wordt aangemaakt kunnen we dit 
-        veld ook gebruiken als unique id (identifier) voor de posts.
+        veld ook gebruiken als unieke id (identifier) voor de posts.
     */
     uint256 public postCount = 0;
 
     /* 
         Een mapping is een manier om data op te slaan in de vorm van 'key-value' paren. 
-        Als key gaan we gebruik maken van het postCount veld en als value ee, post object.
+        Als key gaan we gebruik maken van het postCount veld. Als value gebruiken we een post object.
     */
     mapping(uint256 => Post) public posts;
 
     /* 
-        Een struct in solidity komt overen met een object in andere programmeertalen zoals Java of C#.
+        Een struct in Solidity komt overen met een object in andere programmeertalen zoals Java of C#.
     */
     struct Post {
-        uint256 id; // De uniqie identifier van een post.
+        uint256 id; // De unieke identifier van een post.
         string hash; //De hash die we terugkrijgen van IPFS wanneer de foto opgeslagen is.
         string description; // Een beschrijving van de post.
         uint256 likes; // Het aantal likes dat de post heeft.
-        uint256 amountPerLike; //Hoeveelheid Ether die er betaald wordt per like.
+        uint256 amountPerLike; // Hoeveelheid Ether die er betaald wordt per like.
         address payable author; // De auteur van de post.
     }
 
     /* 
-        Een event in solidity wordt gebruikt om de applicatie die het contract gebruikt te laten weten wat de 
+        Een event in Solidity wordt gebruikt om de applicatie die het contract gebruikt te laten weten wat de 
         huidige situatie van het contract is en wat er eventueel veranderd is. 
         
-        Dit event laat de applicatie weten wanneer er een nieuwe post is aangemaakt en welke velden deze nieuwe post bevat.
+        Dit event laat de applicatie weten wanneer er een nieuwe post is aangemaakt en welke velden de nieuwe post bevat.
     */
     event PostCreated(
         uint256 id,
@@ -52,7 +51,7 @@ contract PostDapp {
     );
 
     /*
-        Dit event laat ons weten wanneer er een post is geliked en en welke velden deze gelikede post bevat.   
+        Dit event laat ons weten wanneer er een post is gelikte is en welke velden deze gelikte post bevat.   
     */
     event PostLiked(
         uint256 id,
@@ -64,7 +63,7 @@ contract PostDapp {
     );
 
     /*
-        Een functie in solidity volgt hetzelfde principe als dat van andere programmeertalen, het is een set van 
+        Een functie in Solidity volgt hetzelfde principe als dat van andere programmeertalen, het is een set van 
         instructies die successievelijk uitgevoerd worden.
 
         Deze functie wordt gebruikt voor het aanmaken van een post.
@@ -75,9 +74,9 @@ contract PostDapp {
 
      */
     function createPost(
-        string memory _imgHash, //De hash die we terugkrijgen van IPFS wanneer de foto opgeslagen is.
+        string memory _imgHash, // De hash die we terugkrijgen van IPFS wanneer de foto opgeslagen is.
         string memory _description, // Een beschrijving van de post.
-        uint256 _amountPerLike //Hoeveelheid Ether die er betaald wordt per like.
+        uint256 _amountPerLike // Hoeveelheid Ether die betaald wordt per like.
     ) public {
         /* 
             Nakijken of de parameters _imgHash en _description bruikbaar zijn. 
@@ -93,7 +92,7 @@ contract PostDapp {
         /*
             We maken een post aan. We doen dit door gebruik te maken van de posts mapping en de Post struct.
 
-            Voorbeeld als postCount op 1 staat: posts[1] = Post(1, 'hghiahh6766hsiaha', 'Dit is een post beschrijving!', 0, 2, 0x0...);
+            Voorbeeld als postCount op 1 staat: posts[1] = Post(1, 'hash123...', 'Dit is een post beschrijving!', 0, 2, 0x0...);
         */
         posts[postCount] = Post(
             postCount,
@@ -119,7 +118,7 @@ contract PostDapp {
 
     /*
         Deze functie wordt gebruikt voor het liken van een post.
-        Wanneer er een post geliked wordt geven we de id van de gelikede post mee aan deze functie.
+        Wanneer er een post geliket wordt geven we de id van de gelikete post mee aan deze functie.
     */
     function likePost(uint256 _id) public payable {
         /* 
@@ -130,7 +129,7 @@ contract PostDapp {
         require(_id > 0 && _id <= postCount);
 
         /*
-            We vragen de gegevens van de gelikede post op uit de mapping posts en slaan het op in een Post object met de naam _post.
+            We vragen de gegevens van de gelikete post op uit de mapping posts en slaan het op in een Post object met de naam _post.
         */
         Post memory _post = posts[_id];
 
@@ -157,7 +156,7 @@ contract PostDapp {
         posts[_id] = _post;
 
         /*
-            We 'lanceren' het event om de applicatie te laten weten dat er een post is geliked.
+            We 'lanceren' het event om de applicatie te laten weten dat er een post is geliket.
         */
         emit PostLiked(
             _id,

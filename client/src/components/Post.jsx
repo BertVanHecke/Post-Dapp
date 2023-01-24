@@ -2,10 +2,12 @@ import React, { useState, useContext } from "react";
 import { useEffect } from "react";
 import { EthContext } from "../contexts/EthContext";
 
+/*
+  Een individuele post
+*/
 function Post({ id, description, amountPerLike, likes, author, hash }) {
   const eth = useContext(EthContext);
   const [loading, setLoading] = useState(false);
-  console.log(eth);
 
   useEffect(() => {
     eth.state.loading ? setLoading(true) : setLoading(false);
@@ -13,6 +15,10 @@ function Post({ id, description, amountPerLike, likes, author, hash }) {
 
   const payAuthor = (_id) => {
     setLoading(true);
+    /* 
+      We zetten de hoeveelheid Ether die gevraagd wordt door den auteur voor een like om in Wei.
+      Wei is een eenheid van Ether: 1 ETH is gelijk aan 1,000,000,000,000,000,000 wei.
+    */
     const BNamountPerLike = eth.state.web3.utils.BN(amountPerLike);
     const value = eth.state.web3.utils.toWei(BNamountPerLike, "Ether");
     eth.state.contract.methods

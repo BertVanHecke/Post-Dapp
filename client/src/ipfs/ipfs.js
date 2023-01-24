@@ -7,6 +7,9 @@ const authorization = `Basic ${Buffer.from(
   `${projectId}:${projectSecret}`
 ).toString("base64")}`;
 
+/*
+  Verbinding maken met IPFS
+*/
 export let ipfs;
 try {
   ipfs = create({

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { EthProvider } from "./contexts/EthContext";
 import NavBar from "./components/NavBar";
-import "./App.css";
 import Feed from "./components/Feed";
 import Modal from "./components/Modal";
 import Footer from "./components/Footer";
+import "./App.css";
 
 function App() {
   const [open, setOpen] = useState(false);
