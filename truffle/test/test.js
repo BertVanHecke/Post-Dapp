@@ -31,7 +31,7 @@ contract("PostDapp", ([deployer, author, liker]) => {
   */
   describe("Posts", () => {
     /* 
-      Het veld result is voor het antwoord dat wordt teruggestuurd wanneer we een post aanmaken.
+      Het veld result wordt gebruikt voor het antwoord dat wordt teruggestuurd wanneer we een post aanmaken.
       Het veld postCount is voor het opslaan van de postCount.
       Het veld hash is een test hash omdat we hier geen afbeelding opslaan op IPFS en dus geen hash terugkrijgen.
     */
@@ -39,8 +39,8 @@ contract("PostDapp", ([deployer, author, liker]) => {
     const hash = "hash";
 
     /* 
-      Voor dat we aan de test beginnen maken we we een post aan, 
-      het event dat we aanroepen op het einde van deze functie stuurt een antwoord terug.
+      Voor dat we aan de test beginnen, maken we een post aan.
+      Het event dat we aanroepen op het einde van deze functie stuurt een antwoord terug.
     */
     before(async () => {
       result = await postDapp.createPost(hash, "Post description", 1, {

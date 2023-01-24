@@ -11,8 +11,8 @@ contract PostDapp {
     string public name = "PostDapp";
 
     /* 
-        postCount houdt de hoeveelheid posts die er geplaatst zijn via het slimme contract bij,
-        aangezien we de postCount verhogen telkens dat er een post wordt aangemaakt kunnen we dit 
+        postCount houdt de hoeveelheid posts bij die er geplaatst zijn via het slimme contract.
+        Aangezien we de postCount verhogen telkens als er een post wordt aangemaakt, kunnen we dit 
         veld ook gebruiken als unieke id (identifier) voor de posts.
     */
     uint256 public postCount = 0;
@@ -28,7 +28,7 @@ contract PostDapp {
     */
     struct Post {
         uint256 id; // De unieke identifier van een post.
-        string hash; //De hash die we terugkrijgen van IPFS wanneer de foto opgeslagen is.
+        string hash; // De hash die we terugkrijgen van IPFS wanneer de foto opgeslagen is.
         string description; // Een beschrijving van de post.
         uint256 likes; // Het aantal likes dat de post heeft.
         uint256 amountPerLike; // Hoeveelheid Ether die er betaald wordt per like.
@@ -51,7 +51,7 @@ contract PostDapp {
     );
 
     /*
-        Dit event laat ons weten wanneer er een post is gelikte is en welke velden deze gelikte post bevat.   
+        Dit event laat ons weten wanneer er een post is geliket is en welke velden deze gelikete post bevat.   
     */
     event PostLiked(
         uint256 id,
@@ -69,8 +69,9 @@ contract PostDapp {
         Deze functie wordt gebruikt voor het aanmaken van een post.
  
         Memory (geheugen) in Solidity is een tijdelijke plaats om gegevens op te slaan, terwijl Storage (opslag) gegevens tussen functieaanroepen bewaart. 
-        Het Solidity Smart Contract kan elke hoeveelheid geheugen gebruiken tijdens de uitvoering, maar zodra de uitvoering stopt, is het geheugen volledig gewist voor de volgende uitvoering.   
-        Opslag aan de andere kant is persistent. Dit wil zeggen dat elke uitvoering van het Smart-contract toegang heeft tot de gegevens die eerder in het opslaggebied waren opgeslagen.
+        Het Solidity Smart Contract kan elke hoeveelheid geheugen gebruiken tijdens de uitvoering, 
+        maar zodra de uitvoering stopt, is het geheugen volledig gewist voor de volgende uitvoering.   
+        Opslag daarentegen is persistent. Dit wil zeggen dat elke uitvoering van het Smart-contract toegang heeft tot de gegevens die eerder in het opslaggebied waren opgeslagen.
 
      */
     function createPost(
@@ -86,7 +87,7 @@ contract PostDapp {
         require(bytes(_imgHash).length > 0); // _imghash mag niet leeg zijn
         require(msg.sender != address(0x0)); // het adres van de auteur moet bestaan
 
-        //We verhogen de waarde van het postCount veld met 1
+        // We verhogen de waarde van het postCount veld met 1
         postCount++;
 
         /*
@@ -118,13 +119,14 @@ contract PostDapp {
 
     /*
         Deze functie wordt gebruikt voor het liken van een post.
-        Wanneer er een post geliket wordt geven we de id van de gelikete post mee aan deze functie.
+        Wanneer er een post geliket wordt, geven we de id van de gelikete post mee aan deze functie.
     */
     function likePost(uint256 _id) public payable {
         /* 
             Nakijken of de parameter _id bruikbaar is.             
-            We kijken na of _id groter is dan 0, dit moet waar zijn aangezien de initiele waarde van postCount (die gebruikt wordt als id) gelijk aan 1 is.
-            We kijken ook na of _id kleiner of gelijk is aan postCount, ook dit moet waar zijn aangezien een post met id 20 niet kan bestaan als er maar 15 posts opgeslagen zijn.
+            We kijken na of _id groter is dan 0, dit moet waar zijn aangezien de initiële waarde van postCount (die gebruikt wordt als id) gelijk aan 1 is.
+            We kijken ook na of _id kleiner of gelijk is aan postCount, ook dit moet waar zijn aangezien een post 
+            met id 20 niet kan bestaan als er maar 15 posts opgeslagen zijn.
         */
         require(_id > 0 && _id <= postCount);
 
@@ -151,7 +153,7 @@ contract PostDapp {
         _post.likes++;
 
         /* 
-            We 'steken' de post terug op zijn plaats in de mapping posts.
+            We plaatsen de post terug op zijn plaats in de mapping posts.
         */
         posts[_id] = _post;
 

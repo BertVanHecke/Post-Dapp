@@ -29,7 +29,7 @@ function Feed() {
     const postCount = await eth.state.contract.methods.postCount().call();
 
     /*
-      We halen elke post op en voegen deze toe aan de posts lijst door de itereren zolang als dat de waarde van index <= aan het aantal posts.
+      We halen elke post op en voegen deze toe aan de posts lijst door de itereren zolang als de waarde van de index <= aan het aantal posts.
     */
     let postArray = [];
     for (let index = 1; index <= postCount; index++) {
